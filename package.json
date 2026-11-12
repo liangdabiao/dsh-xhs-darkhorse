@@ -1,0 +1,65 @@
+{
+  "name": "dsh-xhs-darkhorse",
+  "version": "0.1.0",
+  "description": "小红书黑马爆文榜 · 基于红狐数据挖掘各内容分类下互动表现突出的黑马笔记（单日榜，不限粉丝量级）：25 个分类筛选、近 30 天榜单日期查询、TOP50 榜单 + 爆款规律分析 + 小红书风格 HTML 导出 + 侧栏看板。需 RedFox API Key，移植自 redfox-community skills/xiaohongshu-darkhorse。",
+  "license": "MIT",
+  "type": "module",
+  "main": "src/host.js",
+  "exports": {
+    ".": "./src/host.js",
+    "./client": "./dist/client.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./locale/*.json": "./locale/*.json",
+    "./package.json": "./package.json"
+  },
+  "icon": "./icon.svg",
+  "files": [
+    "src",
+    "dist",
+    "lib",
+    "lab",
+    "skills",
+    "locale/*.json",
+    "cordis.patch.yml",
+    "icon.svg",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "dsh-plugin",
+    "deepseek-harness",
+    "xiaohongshu",
+    "darkhorse",
+    "redfox",
+    "content-research"
+  ],
+  "engines": {
+    "node": "^22.19.0 || >=24.0.0",
+    "dsh": ">=0.2.1-rc.2 <0.3.0"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": []
+    }
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test test/*.test.mjs",
+    "smoke": "node scripts/smoke.mjs",
+    "live": "node scripts/live.mjs",
+    "dev": "node scripts/devserver.mjs",
+    "prepare": "npm run build",
+    "prepack": "npm run build"
+  },
+  "dependencies": {
+    "@deepseek-ai/schemastery": "^3.19.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.10"
+  }
+}

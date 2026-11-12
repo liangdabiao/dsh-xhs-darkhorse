@@ -1,0 +1,5 @@
+# 小红书黑马爆文榜：darkhorse_rank 工具（黑马榜抓取/规律分析/导出）+ xhs-darkhorse 技能 + 侧栏看板。
+# 浏览器半边由 dsh.client 声明加载。
+- insert:
+    - id: xhs-darkhorse
+      name: 'dsh-xhs-darkhorse'
