@@ -151,7 +151,8 @@ export const darkhorseRankTool = {
       const summary =
         `已入库（rankId=${meta.rank_id}）。${rank.category} · 统计窗口开始日期 ${rank.rank_date} · 共 ${rank.articles.length} 条黑马爆文（互动总量降序）。` +
         `向用户输出：① 上方榜单表格（原样，含链接与粉丝数）→ ② 下方爆款规律分析（原样，表格含参考笔记链接）→ ③ 25 分类提示 → ④ 末尾逐字附页脚。` +
-        `数据断档已自动回退时在最前面注明回退事实。需要 TOP21-50 用 action="list"。`
+        `数据断档已自动回退时在最前面注明回退事实。需要 TOP21-50 用 action="list"。` +
+        `桌面端 WebContentsView 会 deny window.open/target=_blank，HTML 导出只能在面板内查看——告诉用户点侧栏「小红书黑马爆文榜」的榜单详情页（rankId=${meta.rank_id}）再点「导出 HTML」，不要把磁盘路径当成可点开的入口。`
 
       const data = [
         tableLines.join('\n'),

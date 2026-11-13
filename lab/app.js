@@ -34,6 +34,32 @@
     return body
   }
 
+  // 打开外部链接：桌面端 iframe 里 window.open 会被 WebContentsView deny，
+  // 先请宿主用系统默认浏览器打开；宿主不支持（网页版/无桌面）时退回新窗口。
+  async function openLink(u) {
+    if (!u || u === '#' || u === 'about:blank') return
+    try {
+      const r = await apiPost('/api/open', { url: u })
+      if (r?.ok) { toast('已在系统浏览器打开'); return }
+      throw new Error(r?.error || '打开失败')
+    } catch (e) {
+      const win = window.open(u, '_blank', 'noopener')
+      if (!win) {
+        const hint = /404|not found/i.test(String(e.message))
+          ? '宿主还没重启（/api/open 未上线），重启 dsh 后就能用系统浏览器打开'
+          : e.message
+        toast(`链接打不开：${hint}`, true)
+      }
+    }
+  }
+
+  // 面板里的外链一律交给系统浏览器（桌面端 <a target="_blank"> 同样会被 deny）
+  function bindExternalLinks() {
+    document.querySelectorAll('a[target="_blank"]').forEach((a) => {
+      a.onclick = (e) => { e.preventDefault(); e.stopPropagation(); openLink(a.getAttribute('href')) }
+    })
+  }
+
   let toastTimer = null
   function toast(msg, isErr) {
     $toast.textContent = msg
@@ -203,6 +229,7 @@
         ${it.url ? `<a class="p-go" href="${esc(it.url)}" target="_blank" rel="noreferrer" title="查看原文">${ic('ext')}</a>` : ''}
       </div>`
     }).join('')
+    bindExternalLinks()
   }
 
   function renderAnalysis(container, analysis) {
@@ -241,6 +268,7 @@
       ? `<h3 style="margin:var(--sp-2) 0 var(--sp-3);font-size:13px">3. 可参考亮点</h3><div class="ana-note">${analysis.highlights.map((h) => `<div>${h.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')}</div>`).join('')}</div>`
       : ''
     container.innerHTML = tables.join('') + highlights
+    bindExternalLinks()
   }
 
   async function viewRank(id) {
@@ -448,6 +476,7 @@
 
   // ---------- 渲染辅助 ----------
   function bindCommon() {
+    bindExternalLinks()
     document.querySelectorAll('[data-open-report]').forEach((b) => {
       b.onclick = () => { openReportView(b.dataset.openReport) }
     })
@@ -520,6 +549,12 @@
     }
     render().catch(() => {})
   }
+  // 报告 iframe 里的链接点击会 postMessage 过来，统一交给 openLink 走系统浏览器
+  addEventListener('message', (e) => {
+    if (e.origin !== location.origin) return
+    const m = e.data
+    if (m && m.type === 'dsh:open-link' && typeof m.url === 'string') openLink(m.url)
+  })
   addEventListener('hashchange', () => { state.view = 'rank'; render() })
   boot()
   setTimeout(() => { if (!state.catalog?.version || state.catalog.version === '-') boot() }, 2500)
