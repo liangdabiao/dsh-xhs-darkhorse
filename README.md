@@ -3,6 +3,8 @@
 > 发现小红书上正在悄悄起量的黑马爆文，看清哪些账号和内容最近突然跑出来了。
 
 dsh 插件（完整形态：原生工具 + 数据持久化 + 侧栏看板）。基于红狐数据（redfox.hk）挖掘小红书各内容分类下互动表现突出的黑马笔记——**最新起量的单日榜单，不限粉丝量级**（不是七日爆款笔记周榜）。移植自 [redfox-community](https://github.com/redfox-data/redfox-community) 的 skills/xiaohongshu-darkhorse，Python 引擎全量重写为 Node。
+<img width="1698" height="1398" alt="image" src="https://github.com/user-attachments/assets/a4fcaf40-260c-469a-abc9-3a2af5f4dcb7" />
+
 
 ## 功能
 
