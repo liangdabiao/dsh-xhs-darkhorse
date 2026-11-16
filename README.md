@@ -28,7 +28,7 @@ dsh 插件（完整形态：原生工具 + 数据持久化 + 侧栏看板）。�
 ## 安装
 
 ```bash
-dsh plugin --profile web add file:D:/dsh-research/dsh-xhs-darkhorse
+dsh plugin --profile web add https://github.com/liangdabiao/dsh-xhs-darkhorse
 ```
 
 前置：dsh >= 0.2.1-rc.2；RedFox API Key（[红狐 hub 获取](https://redfox.hk/settings/api-keys?source=github)，`ak_` 开头）。
